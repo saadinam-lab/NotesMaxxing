@@ -1,0 +1,301 @@
+@import "tailwindcss";
+
+:root {
+  /* Light Mode: Warm Editorial */
+  --nm-bg: #f9f8f6;
+  --nm-surface: #ffffff;
+  --nm-surface-subtle: rgba(28, 25, 23, 0.045);
+  --nm-surface-hover: rgba(28, 25, 23, 0.075);
+  --nm-glass: rgba(255, 255, 255, 0.82);
+  --nm-border: rgba(28, 25, 23, 0.09);
+  --nm-border-strong: rgba(28, 25, 23, 0.16);
+  --nm-text: #1c1917;
+  --nm-text-muted: #57534e;
+  --nm-accent: #c2410c;
+  --nm-accent-soft: rgba(194, 65, 12, 0.11);
+  --nm-accent-fg: #ffffff;
+  --nm-page-shadow: 0 1px 2px rgba(28, 25, 23, 0.06), 0 8px 24px rgba(28, 25, 23, 0.05);
+  --nm-popover-shadow: 0 8px 24px rgba(28, 25, 23, 0.10);
+  --nm-scrollbar-thumb: rgba(28, 25, 23, 0.16);
+  --nm-scrollbar-thumb-hover: rgba(28, 25, 23, 0.28);
+
+  --nm-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  --nm-mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+html.dark {
+  /* Dark Mode: Editorial & Warm */
+  --nm-bg: #0c0c0e;
+  --nm-surface: #141418;
+  --nm-surface-subtle: rgba(255, 255, 255, 0.055);
+  --nm-surface-hover: rgba(255, 255, 255, 0.095);
+  --nm-glass: rgba(20, 20, 24, 0.80);
+  --nm-border: rgba(255, 255, 255, 0.08);
+  --nm-border-strong: rgba(255, 255, 255, 0.15);
+  --nm-text: #f4f4f5;
+  --nm-text-muted: #a1a1aa;
+  --nm-accent: #f59e0b;
+  --nm-accent-soft: rgba(245, 158, 11, 0.14);
+  --nm-accent-fg: #0c0c0e;
+  --nm-page-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 14px 36px rgba(0, 0, 0, 0.50);
+  --nm-popover-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --nm-scrollbar-thumb: rgba(255, 255, 255, 0.14);
+  --nm-scrollbar-thumb-hover: rgba(255, 255, 255, 0.26);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--nm-sans);
+  background-color: var(--nm-bg);
+  color: var(--nm-text);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+.nm-heading {
+  letter-spacing: -0.022em;
+}
+
+.nm-hero-heading {
+  letter-spacing: -0.028em;
+}
+
+.font-mono-num {
+  font-family: var(--nm-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* View Transitions API: 60fps Circular Ripple Theme Switch */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* Single-layer top-level glass (never nest backdrop-filter) */
+.nm-glass-bar {
+  background-color: var(--nm-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: var(--nm-border);
+}
+
+.nm-glass-popover {
+  background-color: var(--nm-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: var(--nm-border-strong);
+  box-shadow: var(--nm-popover-shadow);
+}
+
+.nm-recessed {
+  background-color: var(--nm-surface-subtle);
+  border: 1px solid var(--nm-border);
+}
+
+/* Crisp hover feedback at scale(1) - zero blur, zero lag */
+.nm-btn-ghost {
+  transition: background-color 150ms ease-out, color 150ms ease-out, border-color 150ms ease-out;
+}
+
+.nm-btn-ghost:hover:not(:disabled) {
+  background-color: var(--nm-surface-hover);
+  color: var(--nm-text);
+}
+
+/* Targeted surface transitions (never transition: all) */
+.nm-surface-colors {
+  transition-property: background-color, color, border-color;
+  transition-duration: 220ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* PDF canvas filter strictly on the canvas layer—never on highlights, drawings, or UI overlays */
+.pdf-canvas-layer {
+  display: block;
+  transform: translateZ(0);
+  transition: filter 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms ease;
+  will-change: filter;
+}
+
+.pdf-canvas-dark {
+  filter: invert(0.92) hue-rotate(180deg) contrast(0.95);
+}
+
+.pdf-canvas-dark.pdf-dim-images {
+  filter: invert(0.9) hue-rotate(180deg) contrast(0.88) brightness(0.86);
+}
+
+.pdf-canvas-dark.pdf-sepia-tint {
+  filter: invert(0.92) hue-rotate(180deg) contrast(0.94) sepia(0.18) brightness(0.95);
+}
+
+.pdf-canvas-dark.pdf-dim-images.pdf-sepia-tint {
+  filter: invert(0.9) hue-rotate(180deg) contrast(0.88) sepia(0.18) brightness(0.84);
+}
+
+.pdf-canvas-light.pdf-sepia-tint {
+  filter: sepia(0.18) contrast(0.97) brightness(0.98);
+}
+
+/* Custom slim scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--nm-scrollbar-thumb);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--nm-scrollbar-thumb-hover);
+}
+
+/* PDF.js v6 TextLayer exact positioning rules (override Tailwind border-box reset) */
+.pdf-page-container {
+  --user-unit: 1;
+  --total-scale-factor: calc(var(--scale-factor, 1) * var(--user-unit));
+  --scale-round-x: 1px;
+  --scale-round-y: 1px;
+}
+
+.textLayer,
+.textLayer * {
+  box-sizing: content-box;
+}
+
+.textLayer {
+  color-scheme: only light;
+  position: absolute;
+  text-align: initial;
+  inset: 0;
+  overflow: clip;
+  opacity: 1;
+  line-height: 1;
+  letter-spacing: normal;
+  word-spacing: normal;
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  caret-color: CanvasText;
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+}
+
+.textLayer :is(span, br) {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  transform-origin: 0% 0%;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  user-select: text;
+}
+
+.textLayer > :not(.markedContent),
+.textLayer .markedContent span:not(.markedContent) {
+  z-index: 1;
+  --font-height: 0;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  --scale-x: 1;
+  --rotate: 0deg;
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+
+.textLayer .markedContent {
+  display: contents;
+}
+
+.textLayer span[role="img"] {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+.textLayer ::selection {
+  background: rgba(245, 158, 11, 0.30);
+  color: transparent;
+}
+
+.textLayer ::-moz-selection {
+  background: rgba(245, 158, 11, 0.30);
+  color: transparent;
+}
+
+.textLayer br::selection {
+  background: transparent;
+}
+
+.textLayer .endOfContent {
+  display: block;
+  position: absolute;
+  inset: 100% 0 0;
+  z-index: 0;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.textLayer.selecting .endOfContent {
+  top: 0;
+}
+
+/* Highlight flash pulse animation for Revision Sidebar jump */
+@keyframes highlightPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+  25% {
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.72);
+  }
+  50% {
+    box-shadow: 0 0 0 2px rgba(194, 65, 12, 0.55);
+  }
+  75% {
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.68);
+  }
+}
+
+.animate-highlight-pulse {
+  animation: highlightPulse 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
